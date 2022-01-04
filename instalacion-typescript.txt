@@ -1,0 +1,52 @@
+---------------Pasos para instalar typescript-----------------
+- Abrir el cmd como admin
+-> Ejecutar los siguientes comandos 
+-npm install -g typescript
+-tsc -v (Corre este comando para ver si se instalo correctamente)
+
+
+----------ver archivo typescript en el navegador------------
+-> correr comando: tsc nombreArchivo
+
+-> especificar al IDE que estamos trabajando con un proyecto de typescript
+Proporcionar comando: tsc -init
+
+-> Lo ideal es convertir en automatico nuestros archivos ts a js
+para eso se corre el comando: tsc -w
+
+-----------Trabajando con modulos------------------
+-> Ya que los modulos no se pueden trabajar directamente a través del index.html, entonces se necesita ejecutarlo a través de un servidor, empaquetarlo y distribuirlo hacia ese servidor, para ello utilizamos el comando que utiliza el servidor de webpack:
+-npm install webpack webpack-cli webpack-dev-server
+
+-> Luego instalar el typescript loader, a través del siguiente comando: npm install typescript ts-loader --save-dev
+-> Posteriomente debemos generar nuestro archivo package.json, a través del siguiente comando: npm init -y.
+Despues entramos al archivo de package.json y despues de  "license": "ISC", proporcionar las siguientes lineas "scripts": {
+    "start": "webpack-dev-server --mode development"
+  }
+
+-> Luego de ello, debemos crear el archivo webpack.config.js
+ingresando las siguientes lineas de codigo, todo deberia quedar listo para poder trabajar con nuestros modulos 
+
+const path = require('path');
+
+module.exports = {
+    entry: path.join(__dirname, '/modulos.ts'),
+    output: {
+        filename: 'modulos.js',
+        path: __dirname
+    },
+    module: {
+        rules: [
+            {
+                test: /\.tsx?$/,
+                loader: 'ts-loader',
+                exclude: /node_modules/,
+            },
+        ]
+    },
+    resolve: {
+        extensions: [".tsx", ".ts", ".js"]
+    },
+};
+
+-> finalmente se ejecuta el comando npm start para iniciar nuestro servidor
